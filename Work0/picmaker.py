@@ -1,4 +1,4 @@
-file = open("newImage.ppm", 'r')
+file = open("newImage.ppm", 'w')
 
 file.write("P3 500 500 255 \n")
 
