@@ -1,2 +1,2 @@
 all:
-	python3 picmaker.py
+	python picmaker.py
