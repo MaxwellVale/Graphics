@@ -45,6 +45,7 @@ def save_ppm( screen, fname ):
     f.close()
 
 def save_extension( screen, fname ):
+    print (fname)
     ppm_name = fname[:fname.find('.')] + '.ppm'
     save_ppm( screen, ppm_name )
     p = Popen( ['convert', ppm_name, fname ], stdin=PIPE, stdout = PIPE )
