@@ -7,19 +7,24 @@ color = [ 10, 12, 100 ]
 matrix = new_matrix(4,10)
 m1 = [[1, 2, 3, 1], [4, 5, 6, 1]]
 m2 = [[2, 4], [4, 6], [6, 8]]
+m3 = [[1, 2, 3, 1], [4, 5, 6, 1]]
+m4 = [[1, 2, 3, 1], [4, 5, 6, 1], [7, 8, 9, 1], [10, 11, 12, 1]]
 
 print_matrix(matrix)
 print ('\n')
 print_matrix(ident(matrix))
 print ('\n')
-print("Matrix 1")
-print_matrix(m1)
+print("Matrix 3")
+print_matrix(m3)
 print ('\n')
-print("Matrix 2")
-print_matrix(m2)
+print("Matrix 4")
+print_matrix(m4)
 print ('\n')
-print("m1 * m2")
-print_matrix(matrix_mult(m1, m2))
+print("Testing identity:")
+print_matrix(matrix_mult(ident(matrix), m3))
+print('\n')
+print("m4 * m3")
+print_matrix(matrix_mult(m4, m3))
 
 edgeMat = new_matrix()
 
@@ -34,7 +39,9 @@ while angle > -90:
     y = newY
     angle -= .01
 
-
+# print ('\n')
+# print("Image Matrix")
+# print_matrix(edgeMat)
 draw_lines(edgeMat, screen, color)
 display(screen)
 save_extension(screen, 'matrixIMG.png')
