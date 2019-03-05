@@ -22,23 +22,32 @@ line
 100 100 0 100 100 100
 line
 100 0 0 100 0 100
-display
-save
-pic1.png
+line
+0 0 0 50 100 50
+line
+100 0 0 50 100 50
+line
+100 0 100 50 100 50
+line
+0 0 100 50 100 50
+line
+0 100 0 50 0 50
+line
+100 100 0 50 0 50
+line
+100 100 100 50 0 50
+line
+0 100 100 50 0 50
 ident
 scale
 2 2 2
 apply
 display
-save
-pic2.png
 ident
 move
 150 150 0
 apply
 display
-save
-pic3.png
 ident
 rotate
 z 20
@@ -49,11 +58,4 @@ y 20
 apply
 display
 save
-pic4.png
-ident
-rotate
-y 20
-apply
-display
-save
-pic5.png
+pic.png
