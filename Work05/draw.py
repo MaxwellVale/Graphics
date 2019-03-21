@@ -2,12 +2,24 @@ from display import *
 from matrix import *
 
   # ====================
-  # add the points for a rectagular prism whose 
-  # upper-left corner is (x, y, z) with width, 
+  # add the points for a rectagular prism whose
+  # upper-left corner is (x, y, z) with width,
   # height and depth dimensions.
   # ====================
 def add_box( points, x, y, z, width, height, depth ):
-    pass
+    add_edge(points, x, y, z, x, y - height, z)
+    add_edge(points, x, y, z, x + width, y, z)
+    add_edge(points, x + width, y - height, z, x + width, y, z)
+    add_edge(points, x + width, y - height, z, x, y - height, z)
+    add_edge(points, x, y, z + depth, x, y - height, z + depth)
+    add_edge(points, x, y, z + depth, x + width, y, z + depth)
+    add_edge(points, x + width, y - height, z + depth, x + width, y, z + depth)
+    add_edge(points, x + width, y - height, z + depth, x, y - height, z + depth)
+    add_edge(points, x, y, z, x, y, z + depth)
+    add_edge(points, x, y - height, z, x, y - height, z + depth)
+    add_edge(points, x + width, y, z, x + width, y, z + depth)
+    add_edge(points, x + width, y - height, z, x + width, y - height, z + depth)
+
 
   # ====================
   # Generates all the points along the surface
@@ -16,16 +28,28 @@ def add_box( points, x, y, z, width, height, depth ):
   # Returns a matrix of those points
   # ====================
 def generate_sphere( points, cx, cy, cz, r, step ):
-    pass
+    retMatrix = []
+    for a in range(step + 1):
+        for b in range(step + 1):
+
+            x = r * math.cos(b * 2 * math.pi / step) + cx
+            y = r * math.sin(b * 2 * math.pi / step) * math.cos(a * 2 * math.pi / step) + cy
+            z = r * math.sin(b * 2 * math.pi / step) * math.sin(a * 2 * math.pi / step) + cz
+
+            add_point(retMatrix, x, y, z)
+
+    return retMatrix
 
   # ====================
-  # adds all the points for a sphere with center 
+  # adds all the points for a sphere with center
   # (cx, cy, cz) and radius r to points
   # should call generate_sphere to create the
   # necessary points
   # ====================
 def add_sphere( points, cx, cy, cz, r, step ):
-    pass
+    spherePoints = generate_sphere(points, cx, cy, cz, r, step)
+    for point in spherePoints:
+        add_edge(points, point[0], point[1], point[2], point[0] + 1, point[1] + 1, point[2] + 1)
 
 
   # ====================
@@ -35,7 +59,16 @@ def add_sphere( points, cx, cy, cz, r, step ):
   # Returns a matrix of those points
   # ====================
 def generate_torus( points, cx, cy, cz, r0, r1, step ):
-    pass
+    retMatrix = []
+    for a in range(step + 1):
+        for b in range(step + 1):
+
+            x = math.cos(a * 2 * math.pi / step) * (r0 * math.cos(b * 2 * math.pi / step) + r1)
+            y = r0 * math.sin(b * 2 * math.pi / step)
+            z = -1 * math.sin(a * 2 * math.pi / step) * (r0 * math.cos(b * 2 * math.pi / step) + r1)
+
+            add_point(retMatrix, x, y, z)
+    return retMatrix
 
   # ====================
   # adds all the points for a torus with center
@@ -44,8 +77,10 @@ def generate_torus( points, cx, cy, cz, r0, r1, step ):
   # necessary points
   # ====================
 def add_torus( points, cx, cy, cz, r0, r1, step ):
-    pass
+    torusPoints = generate_torus(points, cx, cy, cz, r0, r1, step)
 
+    for point in torusPoints:
+        add_edge(points, point[0], point[1], point[2], point[0] + 1, point[1] + 1, point[2] + 1)
 
 
 def add_circle( points, cx, cy, cz, r, step ):
@@ -93,16 +128,16 @@ def draw_lines( matrix, screen, color ):
                    int(matrix[point][1]),
                    int(matrix[point+1][0]),
                    int(matrix[point+1][1]),
-                   screen, color)    
+                   screen, color)
         point+= 2
-        
+
 def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
     add_point(matrix, x0, y0, z0)
     add_point(matrix, x1, y1, z1)
-    
+
 def add_point( matrix, x, y, z=0 ):
     matrix.append( [x, y, z, 1] )
-    
+
 
 
 
@@ -126,7 +161,7 @@ def draw_line( x0, y0, x1, y1, screen, color ):
     if ( abs(x1-x0) >= abs(y1 - y0) ):
 
         #octant 1
-        if A > 0:            
+        if A > 0:
             d = A + B/2
 
             while x < x1:
