@@ -1,0 +1,121 @@
+# Gallery Submission Script for Work05 3D
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 5 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+z 20
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+x 25
+rotate
+y 25
+move
+250 250 0
+apply
+save
+Work05Gallery.png

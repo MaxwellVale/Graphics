@@ -63,9 +63,9 @@ def generate_torus( points, cx, cy, cz, r0, r1, step ):
     for a in range(step + 1):
         for b in range(step + 1):
 
-            x = math.cos(a * 2 * math.pi / step) * (r0 * math.cos(b * 2 * math.pi / step) + r1)
-            y = r0 * math.sin(b * 2 * math.pi / step)
-            z = -1 * math.sin(a * 2 * math.pi / step) * (r0 * math.cos(b * 2 * math.pi / step) + r1)
+            x = math.cos(a * 2 * math.pi / step) * (r0 * math.cos(b * 2 * math.pi / step) + r1) + cx
+            y = r0 * math.sin(b * 2 * math.pi / step) + cy
+            z = -1 * math.sin(a * 2 * math.pi / step) * (r0 * math.cos(b * 2 * math.pi / step) + r1) + cz
 
             add_point(retMatrix, x, y, z)
     return retMatrix
