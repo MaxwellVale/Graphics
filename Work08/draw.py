@@ -1,9 +1,43 @@
 from display import *
 from matrix import *
 from gmath import *
+import random
+import math
 
 def scanline_convert(polygons, i, screen, zbuffer ):
-    pass
+    randColor = [ random.randint(0,255), random.randint(0,255), random.randint(0,255) ]
+
+    top = polygons[i]
+    middle = polygons[i+1]
+    bottom = polygons[i+2]
+    if bottom[1] > middle[1]:
+        temp = bottom
+        bottom = middle
+        middle = temp
+    if bottom[1] > top[1]:
+        temp = bottom
+        bottom = top
+        top = temp
+    if middle[1] > top[1]:
+        temp = middle
+        middle = top
+        top = temp
+    x0, x1, y, z0, z1 = bottom[0], bottom[0], int(bottom[1]), bottom[2], bottom[2]
+    while y < int(middle[1]):
+        draw_line(int(x0), int(y), int(z0), int(x1), int(y), int(z1), screen, zbuffer, randColor)
+        x0 += (top[0] - bottom[0]) / (top[1] - bottom[1])
+        x1 += (middle[0] - bottom[0]) / (middle[1] - bottom[1])
+        y += 1
+        z0 += (top[2] - bottom[2]) / (top[1] - bottom[1])
+        z1 += (middle[2] - bottom[2]) / (middle[1] - bottom[1])
+    x1, y, z1 = middle[0], int(middle[1]), middle[2]
+    while y < int(top[1]):
+        draw_line(int(x0), int(y), int(z0), int(x1), int(y), int(z1), screen, zbuffer, randColor)
+        x0 += (top[0] - bottom[0]) / (top[1] - bottom[1])
+        x1 += (top[0] - middle[0]) / (top[1] - middle[1])
+        y += 1
+        z0 += (top[2] - bottom[2]) / (top[1] - bottom[1])
+        z1 += (top[2] - middle[2]) / (top[1] - middle[1])
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0)
@@ -21,27 +55,7 @@ def draw_polygons( polygons, screen, zbuffer, color ):
         normal = calculate_normal(polygons, point)[:]
         #print normal
         if normal[2] > 0:
-            draw_line( int(polygons[point][0]),
-                       int(polygons[point][1]),
-                       polygons[point][2],
-                       int(polygons[point+1][0]),
-                       int(polygons[point+1][1]),
-                       polygons[point+1][2],
-                       screen, zbuffer, color)
-            draw_line( int(polygons[point+2][0]),
-                       int(polygons[point+2][1]),
-                       polygons[point+2][2],
-                       int(polygons[point+1][0]),
-                       int(polygons[point+1][1]),
-                       polygons[point+1][2],
-                       screen, zbuffer, color)
-            draw_line( int(polygons[point][0]),
-                       int(polygons[point][1]),
-                       polygons[point][2],
-                       int(polygons[point+2][0]),
-                       int(polygons[point+2][1]),
-                       polygons[point+2][2],
-                       screen, zbuffer, color)
+            scanline_convert(polygons, point, screen, zbuffer)
         point+= 3
 
 
@@ -253,20 +267,15 @@ def add_point( matrix, x, y, z=0 ):
 
 
 def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
-
     #swap points if going right -> left
     if x0 > x1:
-        xt = x0
-        yt = y0
-        x0 = x1
-        y0 = y1
-        x1 = xt
-        y1 = yt
+        x0, y0, z0, x1, y1, z1 = x1, y1, z1, x0, y0, z0
 
     x = x0
     y = y0
     A = 2 * (y1 - y0)
     B = -2 * (x1 - x0)
+    C= z1 - z0
     wide = False
     tall = False
 
@@ -305,17 +314,20 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             loop_start = y1
             loop_end = y
 
-    while ( loop_start < loop_end ):
-        plot( screen, zbuffer, color, x, y, 0 )
-        if ( (wide and ((A > 0 and d > 0) or (A < 0 and d < 0))) or
-             (tall and ((A > 0 and d < 0) or (A < 0 and d > 0 )))):
+    if (loop_end!=loop_start):
+        C /= (loop_end-loop_start)
+        
+        for i in range(loop_end - loop_start):
+            plot(screen, zbuffer, color, x, y, z0)
+            z0 += C
+            if ((wide and ((A > 0 and d > 0) or (A < 0 and d < 0))) or
+                (tall and ((A > 0 and d < 0) or (A < 0 and d > 0 )))):
 
-            x+= dx_northeast
-            y+= dy_northeast
-            d+= d_northeast
-        else:
-            x+= dx_east
-            y+= dy_east
-            d+= d_east
-        loop_start+= 1
-    plot( screen, zbuffer, color, x, y, 0 )
+                x+= dx_northeast
+                y+= dy_northeast
+                d+= d_northeast
+            else:
+                x+= dx_east
+                y+= dy_east
+                d+= d_east
+        plot(screen, zbuffer, color, x, y, z1)
