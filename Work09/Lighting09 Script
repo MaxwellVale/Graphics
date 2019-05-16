@@ -1,0 +1,18 @@
+push
+rotate
+y 30
+rotate
+x 40
+box
+200 200 0 300 300 100
+pop
+push
+rotate
+y 30
+rotate
+x 40
+box
+-400 400 0 200 200 100
+pop
+save
+Lighting09Pic.png
